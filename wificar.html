@@ -1,0 +1,81 @@
+<!DOCTYPE html >
+<html>
+<head>
+<title>WiFi controlled Car</title>
+<script src="jquery.js"></script>
+
+</head>
+<body>
+<h2> <i> WiFi Controlled Car using Arduino and ESP8266 </i> </h2>
+<h4> <i> Enter the IP address of ESP8266 </i> </h4>
+<div style="margin: 0; width:400px; height:30px;">
+<FORM NAME="form" ACTION="" METHOD="GET">
+ESP8266 IP Address:
+<INPUT TYPE="text" NAME="inputbox" VALUE="" />
+</FORM>
+</div>
+
+<button onclick="W()">W</button>
+<button onclick="A()">A</button>
+<button onclick="S()">S</button>
+<button onclick="D()">D</button>
+
+
+</body>
+<script>
+$.ajaxSetup({timeout:1000});
+function W()
+{
+	var val1 = 'p';
+	val1 = 'w';
+
+		TextVar = form.inputbox.value;
+	ArduinoVar = "http://" + TextVar + ":25565/";
+	$.get( ArduinoVar, {led: val1})	;
+	{Connection: close};
+
+
+}
+function A()
+{
+	var val1 = 'p';
+	val1 = 'a';
+
+		TextVar = form.inputbox.value;
+	ArduinoVar = "http://" + TextVar + ":25565/";
+	$.get( ArduinoVar, {led: val1})	;
+	{Connection: close};
+
+
+}
+function S()
+{
+	var val1 = 'p';
+	val1 = 's';
+
+		TextVar = form.inputbox.value;
+	ArduinoVar = "http://" + TextVar + ":25565/";
+	$.get( ArduinoVar, {led: val1})	;
+	{Connection: close};
+
+
+}
+function D()
+{
+	var val1 = 'p';
+	val1 = 'd';
+
+		TextVar = form.inputbox.value;
+	ArduinoVar = "http://" + TextVar + ":25565/";
+	$.get( ArduinoVar, {led: val1})	;
+	{Connection: close};
+
+
+}
+
+
+
+
+
+</script>
+</html>

@@ -1,0 +1,54 @@
+.center {
+	position: relative;
+	text-align: center;
+	color: white;
+}
+
+.screenCenter {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+/*.cardCenter {
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%);
+	font-size: 20px;
+	font-color: black;
+	text-align: center;
+}
+
+.row {
+	position: relative;
+}*/
+
+.parallax-window {
+	min-height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+body {
+	font-size: 17px;
+}
+
+blockquote {
+	border-left: 5px solid rgb(29, 102, 185) !important;
+}
+
+blockquote {
+	transition: 0.3s ease all;
+}
+
+blockquote:hover {
+	box-shadow: 2px 2px 2px 2px rgb(122, 120, 120);
+}
+
+.btn1 {
+	background-color: rgb(29, 102, 185) !important;
+}
+
+.btn2 {
+	background-color: purple;
+}

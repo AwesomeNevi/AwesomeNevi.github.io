@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>
+        LED Control Project
+    </title class="">
+    <meta name="description" content="Programming, Arduino, Discord, Blogs, fun projects and more">
+    <meta name="keywords" content="Arduino, Discord, Blogs">
+    <meta name="EnlighterJS" content="Advanced javascript based syntax highlighting" data-indent="4"
+        data-selector-block="pre" data-selector-inline="code" data-language="C++" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="parallax.js"></script>
+    <link rel="stylesheet" type="text/css" href="EnlighterJS.min.css" />
+    <script type="text/javascript" src="MooTools.min.js"></script>
+    <script type="text/javascript" src="EnlighterJS.min.js"></script>
+</head>
+
+<body>
+    <div class="background">
+        <div class="container">
+            <h1>LED Control Project </h1>
+            <blockquote style="margin-top: 20px; margin-bottom: 20px;">This is an introductory project</blockquote>
+            <h3>Materials Needed</h3>
+            <ul class="collection">
+                <li class="collection-item avatar">
+                    <img src="arduino uno.jpg" class="circle">
+                    <span class="title"><b>Arduino Uno</b></span>
+                    <p>You can also use any other board just make sure you select it.
+                    </p>
+                    <a href="https://store.arduino.cc/usa/arduino-uno-rev3" target="_blank" class="secondary-content"><i
+                            class="material-icons">add_shopping_cart</i></a>
+                </li>
+                <li class="collection-item avatar">
+                    <img src="breadboard.jpg" class="circle">//
+                    
+                    <span class="title"><b>Breadboard</b></span>
+                    <p>
+                        Wire all your components without having to solder.
+                    </p>
+                    <a href="https://www.ebay.com/itm/MB-102-MB102-830-Points-Breadboard-Solderless-PCB-Protoboard-Board-Test-DIY/192082984361?epid=23014305619&hash=item2cb909bda9:g:Q-kAAOSw5e5ca4MO:rk:3:pf:0"
+                        target="_blank" class="secondary-content"><i class="material-icons">add_shopping_cart</i></a>
+                </li>
+                <li class="collection-item avatar">
+                    <img src="jumper wires.jpg" class="circle">
+                    <span class="title"><b>Jumper Wires</b></span>
+                    <p>Easier to plug into the breadboard than regular Wires
+                        However normal wires can also be used to serve the same purpose.
+                    </p>
+                    <a href="https://store.arduino.cc/usa/10-jumper-wires-150mm-male" target="_blank" class="secondary-content"><i
+                            class="material-icons">add_shopping_cart</i></a>
+                </li>
+                <li class="collection-item avatar">
+                    <img src="led.png" class="circle">
+                    <span class="title"><b>LEDs</b></span>
+                    <p>Pick any size that suits your needs.
+                    </p>
+                    <a href="https://store.arduino.cc/usa/10-yellow-led-5mm" target="_blank" class="secondary-content"><i
+                            class="material-icons">add_shopping_cart</i></a>
+                </li>
+            </ul>
+            <h3>
+                Method
+            </h3>
+            <p>
+                1. Download the <a href="https://www.arduino.cc/en/Main/Software" class="link" target="_blank">Arduino
+                    IDE</a>
+                or you can use the <a href="https://www.arduino.cc/en/Main/Software" class="link" target="_blank">Online
+                    Editor</a>.
+            </p>
+            <img src="ide.png" alt="" style="width: 100%;">
+            <p>
+                2. Copy and paste the code in your Arduino editor.
+            </p>
+            <pre data-enlighter-language="C++">
+/*Control four LEDs using the digital outputs of the Arduino board
+02/19/2019
+by NeviHax#9483
+*/
+                    
+#define LED1 8
+#define LED2 9
+#define LED3 10
+#define LED4 11
+// gives names to the LEDs which we can refer to instead of using the pinMode function
+void setup() { // the setup function runs once when you press reset or power the board
+    pinMode(LED1, OUTPUT);
+    pinMode(LED2, OUTPUT);
+    pinMode(LED3, OUTPUT);
+    pinMode(LED4, OUTPUT);
+    // this tells the board whether the component is an input or an output
+}
+                    
+// the loop function runs over and over again forever
+void loop() {
+    digitalWrite(LED1, HIGH);//turns LED1 on and all the other LEDs off
+    digitalWrite(LED2, LOW);
+    digitalWrite(LED3, LOW);
+    digitalWrite(LED4, LOW);
+    delay(1000);
+    digitalWrite(LED1, LOW);//turns LED2 on and all the other LEDs off
+    digitalWrite(LED2, HIGH);
+    digitalWrite(LED3, LOW);
+    digitalWrite(LED4, LOW);
+    delay(1000);
+    digitalWrite(LED1, LOW);//turns LED3 on and all the other LEDs off
+    digitalWrite(LED2, LOW);
+    digitalWrite(LED3, HIGH);
+    digitalWrite(LED4, LOW);
+    delay(1000);
+    digitalWrite(LED1, LOW);//turns LED4 on and all the other LEDs off
+    digitalWrite(LED2, LOW);
+    digitalWrite(LED3, LOW);
+    digitalWrite(LED4, HIGH);
+    delay(1000);
+}
+</pre>
+            <p>
+                3. Explaining the code
+            </p>
+            <p>
+                <pre data-enlighter-language="C++">
+ #define LED1 8
+ #define LED2 9
+ #define LED3 10
+ #define LED4 11
+            </pre>
+                This part of the code names the pins with the corresponding LED.
+                So we can refer to the pin by using its name instead of its number.
+                This helps to make it easier because you don't have to memorise which
+                pin is connected to each component of your project.
+            </p>
+            <p>
+                <pre data-enlighter-language="C++">
+void setup() {
+pinMode(LED1, OUTPUT);
+pinMode(LED2, OUTPUT);
+pinMode(LED3, OUTPUT);
+pinMode(LED4, OUTPUT);
+}
+            </pre>
+                Remember that the setup code only runs once.This will prove useful in
+                future projects. However today, we are using it only to tell the Arduino
+                board whether the pins are inputs or outputs.
+            </p>
+            <p>
+                <pre data-enlighter-language="C++">
+void loop() {
+digitalWrite(LED1, HIGH);
+digitalWrite(LED2, LOW);
+digitalWrite(LED3, LOW);
+digitalWrite(LED4, LOW);
+delay(1000);
+digitalWrite(LED1, LOW);
+digitalWrite(LED2, HIGH);
+digitalWrite(LED3, LOW);
+digitalWrite(LED4, LOW);
+delay(1000);
+digitalWrite(LED1, LOW);
+digitalWrite(LED2, LOW);
+digitalWrite(LED3, HIGH);
+digitalWrite(LED4, LOW);
+delay(1000);
+digitalWrite(LED1, LOW);
+digitalWrite(LED2, LOW);
+digitalWrite(LED3, LOW);
+digitalWrite(LED4, HIGH);
+delay(1000);
+}
+</pre>
+                The code which is in void loop will continue to repeat and run over and over again.
+                This is the place (in most cases) where you will write mose of your code.
+            </p>
+            <p>
+                <pre data-enlighter-language="C++">
+ digitalWrite(LED1, HIGH);
+ </pre>
+                This command tells the board to turn LED1 on
+            </p>
+            <p>
+                <pre data-enlighter-language="C++">
+digitalWrite(LED2, LOW);
+digitalWrite(LED3, LOW);
+digitalWrite(LED4, LOW);
+</pre>
+                This command tells the board to turn all the other LEDs off.
+            </p>
+            <pre data-enlighter-language="C++">
+delay(1000)
+  </pre>
+            This command tells the board to keep a one second gap before the execution of the next command
+            </p>
+            <p>
+                4. Connect the components to the arduino board in the way decribed in the code 
+                The positive ends of the LEDs go to the corresponding digital pins on the Arduino
+                and the negative pin so to the ground.
+            </p>
+            <p>
+                5.Upload the sketh to the Arduino by clicking on the upload button.
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

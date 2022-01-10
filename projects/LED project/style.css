@@ -1,0 +1,91 @@
+.center {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.screenCenter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.parallax-window {
+    min-height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+body {
+    font-size: 17px;
+}
+
+blockquote {
+    border-left: 5px solid rgb(29, 102, 185) !important;
+}
+
+blockquote {
+    transition: 0.3s ease all;
+}
+
+blockquote:hover {
+    box-shadow: 2px 2px 2px 2px #ccc;
+}
+
+.btn {
+    background-color: rgb(29, 102, 185) !important;
+}
+
+body {
+    background-image: url('LED-image.jpg');
+}
+
+.background {
+    position: absolute;
+    top: 0px;
+    height: 400vh;
+    width: 80%;
+    transform: translate(13%);
+    background-color: #fff;
+}
+
+.collection-item {
+    transition: 0.3s ease all;
+    cursor: pointer;
+}
+
+.collection-item:hover {
+    background-color: #eee !important;
+}
+
+.material-icons {
+    color: rgb(29, 102, 185);
+    transition: 0.3s ease all;
+}
+
+.material-icons:hover {
+    color: rgb(53, 132, 221);
+}
+
+.link {
+    transition: 0.3s ease all;
+    color: rgb(53, 132, 221);
+}
+
+.link:hover {
+    color: rgb(85, 156, 236);
+}
+
+ol {
+    background-color: #fff !important;
+}
+
+.odd,
+.even {
+    transition: 0.3s ease all;
+}
+
+.odd:hover,
+.even:hover {
+    background-color: rgb(228, 241, 255) !important;
+}
