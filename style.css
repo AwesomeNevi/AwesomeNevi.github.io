@@ -1,143 +1,124 @@
-.center {
-	position: relative;
-	text-align: center;
-	color: white;
+/* Flex container */
+.flex-container {
+    display: flex;
+    flex-direction: column; /* Display rows vertically */
+    gap: 40px; /* Increased gap between rows */
+    justify-content: flex-end; /* Align items to the end (right side) */
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1200px;
+    padding-left: 200px;
 }
 
-.screenCenter {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+/* Card wrapper */
+.card-wrapper {
+    position: relative; /* Set the position of the wrapper as relative */
+    display: flex; /* Use flex layout for card and text window */
+    gap: 40px; /* Increased gap between card and text window */
+    align-items: center; /* Align items horizontally */
 }
 
-.realCenter {
-	position: absolute;
-	left: 50%;
-	transform: translate(-50%);
+/* Card flex container */
+.card-flex-container {
+    flex: 1; /* Grow to fill available space */
 }
 
-.content {
-	position: relative;
+/* Text flex container */
+.text-flex-container {
+    flex: 1; /* Grow to fill available space */
 }
 
-.parallax-window {
-	min-height: 100vh;
-	background-color: rgba(0, 0, 0, 0.5);
+/* Article card */
+.article-card {
+    border-radius: 30px; /* Increased border-radius for rounded look */
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;  /* Center image horizontally */
+    align-items: center;  /* Center image vertically */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.1); /* Enhanced box-shadow */
+    transition: all 300ms;
+    background-color: #ffffff; /* White */
+    text-decoration: none;  /* Remove underline */
+    color: inherit;  /* Inherit text color */
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Added border */
 }
 
-body {
-	font-size: 17px;
+.article-card-1 {
+    width: 450px; /* Adjust the width as needed */
+    height: 220px; /* Adjust the height as needed */
 }
 
-blockquote {
-	border-left: 5px solid rgb(29, 102, 185) !important;
+.article-card-2 {
+    width: 350px; /* Adjust the width as needed */
+    height: 170px; /* Adjust the height as needed */
+    margin-left: auto; /* Align the right edge of the card */
 }
 
-blockquote {
-	transition: 0.3s ease all;
+.article-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-blockquote:hover {
-	box-shadow: 2px 2px 2px 2px #ccc;
+.article-card img {
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
 }
 
-.btn {
-	background-color: rgb(29, 102, 185) !important;
+.article-card:hover img {
+    transform: scale(1.1);  /* Zoom in on hover */
 }
 
-.zoom {
-	transition: transform .2s; /* Animation */
-	margin: 0 auto;
-  }
+.article-card .content {
+    box-sizing: border-box;
+    width: 100%;
+    position: absolute;
+    padding: 30px 20px 20px 20px;
+    height: auto;
+    bottom: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
+}
 
-  .zoomducky {
-	transition: transform .2s; /* Animation */
-	margin: 0 auto;
-  }
+.article-card .date,
+.article-card .title {
+    margin: 0;
+}
 
-  
-  .zoom:hover {
-	transform: scale(1.1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
-  }
+.article-card .date {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 4px;
+}
 
-  .zoomducky:hover {
-	transform: scale(1.1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
-  }
+.article-card .title {
+    font-size: 17px;
+    color: #fff;
+}
 
-  .card {
-	width: 400px;
-	border-radius: 100px;
-	background: #7d7d7d;
-	padding: 10px;
-	height: 600px;
-   }
+/* Text window */
+.text-window {
+    padding: 20px;
+    background-color: #ffffff; /* White */
+    border-radius: 12px;
+    border: 1px solid #ddd; /* Light gray border */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2), 0 4px 8px rgba(0, 0, 0, 0.1); /* Enhanced box-shadow */
+    font-family: 'Open Sans', sans-serif; /* Use Open Sans font */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added box-shadow transition */
+}
 
-   .right {
-	margin-left: auto; 
-	margin-right: 20px;
-	padding: 90px 0;
-   }
+.text-window-1 {
+    width: 1000px; /* Adjust the width as needed */
+    height: 50px; /* Adjust the height as needed */
+}
 
-   .left {
-	   margin-right: auto;
-	   margin-left: 20px;
-	   padding: 90px 0;
-   }
+.text-window-2 {
+    width: 600px; /* Adjust the width as needed */
+    height: 30px; /* Adjust the height as needed */
+}
 
-   .imagecard {
-	   width: 500px;
-	   height: 300px;
-   }
-
-	.card-action {
-		text-align: center;
-
-	}	
-	
-	.card-content {
-		text-align: center;
-
-	}	
-
-	.windowmid {
-		height: 100%;
-	}
-
-	.parallax {
-		/* The image used */
-		background-image: url("img_parallax.jpg");
-	  
-		/* Set a specific height */
-		min-height: 300px;
-		margin: 0 auto;
-	  
-		/* Create the parallax scrolling effect */
-		background-attachment: fixed;
-		background-position: center;
-		background-repeat: no-repeat;
-		background-size: cover;
-		border-radius: 10%;
-
-	  }
-
-
-
-	.real-center {
-		margin-left: auto;
-		margin-right: 300px;								
-	}
-
-	.card-center {
-		margin-left: 60px;
-		padding: 90px 0;
-	}
-
-
-	.row {
-		width: 1519px;
-		height: 800px;
-	}
-	
-
-	  
+.text-window:hover {
+    transform: scale(1.01); /* Scale up on hover */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3), 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced box-shadow on hover */
+}
