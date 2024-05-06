@@ -11,7 +11,7 @@ header {
 
 .back-link {
   position: absolute;
-  top: 10px;
+  top: 100px;
   left: 10px;
   display: inline-block;
   width: 32px; /* Increase the size of the arrow */
