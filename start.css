@@ -1,0 +1,62 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f8f2; /* Mint green background similar to the logo's background */
+    color: #7bb8b1; /* A darker shade of the background color for text */
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px; /* Space below the header */
+}
+
+header img {
+    width: 300px;
+    height: auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-radius 0.3s ease; /* Smooth transition including border-radius */
+    border-radius: 10px; /* Initial rounded corners for the image */
+}
+
+header img:hover {
+    transform: scale(1.1); /* Scales up the image */
+    box-shadow: 0 0 15px rgba(123, 184, 177, 0.75); /* Adds a glow effect */
+    border-radius: 20px; /* More pronounced rounded corners when hovered */
+}
+
+h1 {
+    font-size: 36px; /* Consider increasing or decreasing based on design needs */
+    text-align: center;
+    color: inherit; /* Inherits the darker text color set in body */
+}
+
+nav {
+    text-align: center;
+}
+
+nav a {
+    display: block;
+    text-decoration: none;
+    color: inherit; /* Inherits the darker text color */
+    font-size: 20px;
+    margin: 10px 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-radius 0.3s ease; /* Add smooth transitions for border-radius */
+    border-radius: 5px; /* Initial rounded corners for links */
+}
+
+nav a:hover {
+    transform: translateY(-3px); /* Moves the link slightly up */
+    box-shadow: 0 5px 10px rgba(123, 184, 177, 0.5); /* Adds a softer glow effect than the logo */
+    border-radius: 15px; /* More pronounced rounded corners when hovered */
+    text-decoration: underline; /* Underlines the text to indicate interactivity */
+}

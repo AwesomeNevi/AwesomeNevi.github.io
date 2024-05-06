@@ -1,0 +1,130 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f8f8f2; /* Set the background color */
+}
+
+header {
+  position: relative;
+}
+
+.back-link {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: inline-block;
+  width: 32px; /* Increase the size of the arrow */
+  height: 32px; /* Increase the size of the arrow */
+  z-index: 9999; /* Ensure it's above other content */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for transform and box-shadow */
+}
+
+.back-link img {
+  width: 100%;
+  height: auto;
+  padding: 15px;
+  border-radius: 10px; /* Rounded corners for smoothness */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for transform and box-shadow */
+}
+
+.back-link img:hover {
+  transform: scale(1.1); /* Scales up the image */
+  box-shadow: 0 0 15px rgba(123, 184, 177, 0.75); /* Adds a glow effect */
+}
+
+header img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%; /* Limit the image width to the container's width */
+  height: auto; /* Maintain aspect ratio */
+  width: 250px; /* Decrease the size of the logo */
+  padding: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for transform and box-shadow */
+  border-radius: 15px; /* Rounded corners for smoothness */
+}
+
+header img:hover {
+  transform: scale(1.1); /* Scales up the image */
+  box-shadow: 0 0 20px rgba(123, 184, 177, 0.75); /* Adds a glow effect */
+}
+
+.card {
+  margin: 50px auto; /* Adjust margin as needed */
+  width: 600px;
+  height: 300px;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  perspective: 1000px;
+  box-shadow: 0 0 0 5px #ffffff80;
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2);
+}
+
+.card__content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: #f2f2f2;
+  transform: rotateX(-90deg);
+  transform-origin: bottom;
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card:hover .card__content {
+  transform: rotateX(0deg);
+}
+
+.card__title {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+  font-weight: 700;
+}
+
+.card:hover svg {
+  scale: 0;
+}
+
+.card__description {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: #777;
+  line-height: 1.4;
+}
+
+/* Styles for the scrollbar track (part the actual handle slides within) */
+::-webkit-scrollbar {
+  width: 8px;  /* for vertical scrollbars */
+  height: 8px; /* for horizontal scrollbars */
+}
+
+/* Styles for the handle (draggable part of the scrollbar) */
+::-webkit-scrollbar-thumb {
+  background-color: #7bb8b1; /* A darker shade matching the text color */
+  border-radius: 10px;  /* Rounded corners on the scrollbar handle */
+  border: 2px solid #f8f8f2; /* Mint green border matching the background */
+}
+
+/* Styles for the track (part the handle slides within) */
+::-webkit-scrollbar-track {
+  background: #f8f8f2;  /* Light background color of the page */
+  border-radius: 10px; /* Rounded corners on the track */
+}
+
+/* Optional: style the scrollbar corner (where horizontal and vertical scrollbars meet) */
+::-webkit-scrollbar-corner {
+  background: #f8f8f2;
+}
