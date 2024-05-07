@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="sonar.css">
+    <!-- Include a Highlight.js theme (you can choose different themes as needed) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/atom-one-dark.min.css">
+    <title>Obstacle Avoiding Car</title>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">
+            <img src="backarrow.png" alt="Back Arrow">
+        </a>
+        <a href="index.html">
+            <img src="nevisprojectslogo.png" alt="Nevi's Projects Logo">
+        </a>
+    </header>
+
+    <div class="card">
+        <pre><code class="cpp">
+            #include  &lt;AFMotor.h&gt; 
+
+            // Define motor interface
+            AF_DCMotor motorLeft(1); M3
+            AF_DCMotor motorRight(2); // M4
+            
+            // Define ultrasonic sensor pins
+            const int trigPin = 7;
+            const int echoPin = 2;  
+            
+            volatile long startTime = 0; 
+            volatile long travelTime = 0; 
+            volatile bool pulseFinished = false; 
+            
+            void setup() {
+              
+              motorLeft.setSpeed(200);  
+              motorRight.setSpeed(200); 
+            
+             
+              pinMode(trigPin, OUTPUT);
+              pinMode(echoPin, INPUT);
+              attachInterrupt(digitalPinToInterrupt(echoPin), echoChange, CHANGE);
+            
+              
+              Serial.begin(9600);
+            }
+            
+            void loop() {
+              
+              digitalWrite(trigPin, LOW);
+              delayMicroseconds(2);
+              digitalWrite(trigPin, HIGH);
+              delayMicroseconds(10);
+              digitalWrite(trigPin, LOW);
+            
+              if (pulseFinished) {
+                
+                long distance = (travelTime / 2) * 0.0343;
+            
+                
+                if (distance < 30) {
+                 
+                  motorLeft.run(RELEASE);
+                  motorRight.run(RELEASE);
+            
+                  
+                  moveaway();
+                } else {
+                  
+                  motorLeft.run(FORWARD);
+                  motorRight.run(FORWARD);
+                }
+            
+                
+                Serial.print("Distance to obstacle: ");
+                Serial.println(distance);
+                pulseFinished = false;  // Reset the pulse finish flag
+              }
+            }
+            
+            void echoChange() {
+              if (digitalRead(echoPin) == HIGH) {
+                startTime = micros(); 
+              } else {
+                travelTime = micros() - startTime; 
+                pulseFinished = true; 
+              }
+            }
+            
+            void moveaway() {
+              // Reverse motors
+              motorLeft.run(BACKWARD);
+              motorRight.run(BACKWARD);
+              delay(1300); 
+            
+              // Turn right
+              motorLeft.run(FORWARD);
+              motorRight.run(BACKWARD);
+              delay(400); // Turn for 400 milliseconds
+            
+              // Resume forward motion
+              motorLeft.run(FORWARD);
+              motorRight.run(FORWARD);
+            }
+            
+</code></pre>
+    </div>
+    <!-- Include Highlight.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>
