@@ -1,22 +1,22 @@
 from discord import Client, Intents
-from discord.ext.commands import Bot
-from discord.commands import slash_command  # This now should work
+from discord_slash import SlashCommand, SlashContext
 
-# Define intents
+# Set up intents
 intents = Intents.default()
 intents.messages = True
 intents.guilds = True
 
-# Bot setup
-bot = Bot(command_prefix="!", intents=intents)
+# Create client instance
+client = Client(intents=intents)
+slash = SlashCommand(client, sync_commands=True)
 
-@bot.event
+@client.event
 async def on_ready():
-    print(f'Logged in as {bot.user}!')
+    print(f'Logged in as {client.user}!')
 
-@slash_command(guild_ids=[1237307191740993560], description="Say hello")
-async def hello(ctx):
-    await ctx.respond("Hello from my bot!")
+@slash.slash(name="hello", description="Responds with Hello!", guild_ids=[your_guild_id])
+async def hello(ctx: SlashContext):
+    await ctx.send("Hello from my bot!")
 
-#
-bot.run('NTA4Mjk0NzU4MDMzMjYwNTc0.GExjeA.urgN90aRMq6j171oAKC9-BIhl1Hsjxe47o6E8o')
+# Replace 'your_token_here' with your actual bot token
+client.run('NTA4Mjk0NzU4MDMzMjYwNTc0.GExjeA.urgN90aRMq6j171oAKC9-BIhl1Hsjxe47o6E8o')
