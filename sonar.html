@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="sonar.css">
+    <!-- Include a Highlight.js theme (you can choose different themes as needed) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/atom-one-dark.min.css">
+    <title>Sonar Project</title>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">
+            <img src="backarrow.png" alt="Back Arrow">
+        </a>
+        <a href="index.html">
+            <img src="nevisprojectslogo.png" alt="Nevi's Projects Logo">
+        </a>
+    </header>
+
+    <div class="card">
+        <pre><code class="cpp">#include &lt;DHT.h&gt;
+#define DHTPIN 2          // Pin connected to the DHT sensor
+#define DHTTYPE DHT11    
+#define TRIG_PIN 9
+#define ECHO_PIN 10
+
+DHT dht(DHTPIN, DHTTYPE);
+volatile bool echoReceived = false;
+volatile unsigned long startTime = 0;
+volatile unsigned long echoTime = 0;
+
+void setup() {
+    Serial.begin(9600);
+    dht.begin();
+    pinMode(TRIG_PIN, OUTPUT);
+    pinMode(ECHO_PIN, INPUT);
+    attachInterrupt(digitalPinToInterrupt(ECHO_PIN), echoChange, CHANGE);
+}
+
+void loop() {
+    // Read temperature and humidity
+    float humidity = dht.readHumidity();
+    float tempC = dht.readTemperature(); 
+    
+    float speedOfSound = 331.4 + (0.606 * tempC) + (0.0124 * humidity);
+
+    digitalWrite(TRIG_PIN, LOW);  
+    delayMicroseconds(2);
+    digitalWrite(TRIG_PIN, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(TRIG_PIN, LOW);
+    
+    unsigned long duration;
+    if (echoReceived) {
+        duration = echoTime - startTime;
+        long distance = duration * (speedOfSound / 10000) / 2; // Calculate distance
+        
+        Serial.print("Temperature: ");
+        Serial.print(tempC);
+        Serial.print(" C, Humidity: ");
+        Serial.print(humidity);
+        Serial.print("%, Speed of Sound: ");
+        Serial.print(speedOfSound);
+        Serial.print(" m/s, Distance: ");
+        Serial.print(distance);
+        Serial.println(" cm");
+
+        echoReceived = false; 
+    }
+    
+    delay(1000);  
+}
+
+void echoChange() {
+    if (digitalRead(ECHO_PIN) == HIGH) {
+        startTime = micros(); // Record time when echo goes HIGH
+    } else {
+        echoTime = micros(); // Record time when echo goes LOW
+        echoReceived = true;
+    }
+}
+</code></pre>
+    </div>
+    <!-- Include Highlight.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>

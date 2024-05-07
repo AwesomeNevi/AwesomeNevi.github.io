@@ -81,16 +81,39 @@ header img:hover {
   justify-content: center;
 }
 
+.card-text {
+  flex: 0 0 65%;
+  height: 300px;
+  padding: 15px;
+}
+
 .card-image img {
   max-width: 50%; /* Make the image smaller */
   max-height: 100%; /* Limit height to fit within the card */
   display: block; /* Removes bottom space/gap */
 }
 
-.card-text {
+
+.card-image1 {
+  flex: 0 0 15%;
+  padding: 15px;
+  height: 180px; /* Fixed height */
+  width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-text1 {
   flex: 0 0 65%;
   height: 300px;
   padding: 15px;
+}
+
+.card-image1 img {
+  max-width: 50%; /* Make the image smaller */
+  max-height: 100%; /* Limit height to fit within the card */
+  display: block; /* Removes bottom space/gap */
 }
 
 .card-content {
