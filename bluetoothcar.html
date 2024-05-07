@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="sonar.css">
+    <!-- Include a Highlight.js theme (you can choose different themes as needed) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/atom-one-dark.min.css">
+    <title>Obstacle Avoiding Car</title>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">
+            <img src="backarrow.png" alt="Back Arrow">
+        </a>
+        <a href="index.html">
+            <img src="nevisprojectslogo.png" alt="Nevi's Projects Logo">
+        </a>
+    </header>
+
+    <div class="card">
+        <pre><code class="cpp">
+            #include  &lt;AFMotor.h&gt; 
+
+                AF_DCMotor motorLeft(1); //m3
+                AF_DCMotor motorRight(2); // m4
+                
+                const int eyes = 10;
+                const int lightsback = 11;
+                const int horn = 12;
+                
+                void setup() {
+                  Serial.begin(9600); 
+                  motorLeft.setSpeed(250); 
+                  motorRight.setSpeed(250); 
+                
+                  pinMode(eyes, OUTPUT);
+                  pinMode(lightsback, OUTPUT);
+                  pinMode(horn, OUTPUT);
+                
+                
+                  digitalWrite(eyes, LOW);
+                  digitalWrite(lightsback, LOW);
+                  digitalWrite(horn, LOW);
+                }
+                
+                void loop() {
+                  if (Serial.available() > 0) {
+                    char command = Serial.read(); 
+                
+                    switch (command) {
+                      case 'F': 
+                        motorLeft.run(FORWARD);
+                        motorRight.run(FORWARD);
+                        digitalWrite(eyes, HIGH);
+                        digitalWrite(lightsback, LOW);
+                        break;
+                      case 'B': 
+                        motorLeft.run(BACKWARD);
+                        motorRight.run(BACKWARD);
+                        digitalWrite(lightsback, HIGH); 
+                        digitalWrite(eyes, LOW);
+                        break;
+                      case 'L': 
+                        motorLeft.run(BACKWARD);
+                        motorRight.run(FORWARD);
+                        break;
+                      case 'R': 
+                        motorLeft.run(FORWARD);
+                        motorRight.run(BACKWARD);
+                        break;
+                      case 'S': 
+                        motorLeft.run(RELEASE);
+                        motorRight.run(RELEASE);
+                        digitalWrite(eyes, LOW); 
+                        digitalWrite(lightsback, LOW);
+                        break;
+                      case 'H': 
+                        digitalWrite(horn, HIGH); 
+                        delay(500); 
+                        digitalWrite(horn, LOW); 
+                        break;
+                      case '1': 
+                        digitalWrite(eyes, HIGH);
+                        digitalWrite(lightsback, HIGH);
+                        break;
+                      case '0': 
+                        digitalWrite(eyes, LOW);
+                        digitalWrite(lightsback, LOW);
+                        break;
+                    }
+                  }
+                }
+                
+            
+</code></pre>
+    </div>
+    <!-- Include Highlight.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>
