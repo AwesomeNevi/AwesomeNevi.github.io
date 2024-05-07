@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="sonar.css">
+    <!-- Include a Highlight.js theme (you can choose different themes as needed) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/atom-one-dark.min.css">
+    <title>Sonar Project</title>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">
+            <img src="backarrow.png" alt="Back Arrow">
+        </a>
+        <a href="index.html">
+            <img src="nevisprojectslogo.png" alt="Nevi's Projects Logo">
+        </a>
+    </header>
+
+    <div class="card">
+        <pre><code class="cpp">
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+#define SCREEN_WIDTH 128  // width
+#define SCREEN_HEIGHT 64  // height
+#define OLED_RESET     -1 
+#define SCREEN_ADDRESS 0x3C // I2C address 
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(8, OUTPUT);  
+  digitalWrite(8, LOW); 
+
+ 
+  if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
+    Serial.println(F("SSD1306 allocation failed"));
+    for (;;) ; 
+  }
+  display.display();
+  delay(2000); 
+  display.clearDisplay();
+}
+
+void loop() {
+  if (Serial.available()) {
+    String value = Serial.readStringUntil('\n');
+    display.clearDisplay();
+    display.setTextSize(1);
+    display.setTextColor(SSD1306_WHITE); 
+    display.setCursor(0, 0); 
+    display.println(F("Msg Received:"));
+    display.println(value);
+    display.display(); // I like dducks ducks r cool
+
+    digitalWrite(8, HIGH); 
+    delay(100); 
+    digitalWrite(8, LOW); 
+  }
+}
+</code></pre>
+    </div>
+    <!-- Include Highlight.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>
