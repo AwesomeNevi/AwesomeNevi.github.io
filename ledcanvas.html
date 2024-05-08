@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="sonar.css">
+    <!-- Include a Highlight.js theme (you can choose different themes as needed) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/atom-one-dark.min.css">
+    <title>Obstacle Avoiding Car</title>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">
+            <img src="backarrow.png" alt="Back Arrow">
+        </a>
+        <a href="index.html">
+            <img src="nevisprojectslogo.png" alt="Nevi's Projects Logo">
+        </a>
+    </header>
+
+    <div class="card">
+        <pre><code class="cpp">
+            #include  &lt;FastLED.h&gt; 
+
+
+                // Parameters for the RGB matrix
+                #define MATRIX_PIN    7  // Change this to the Arduino pin connected to the data input of the matrix
+                #define MATRIX_WIDTH  8  // Number of columns in the matrix
+                #define MATRIX_HEIGHT 8  // Number of rows in the matrix
+                
+                // Define the CRGB array for the LEDs in the matrix
+                CRGB leds[MATRIX_WIDTH * MATRIX_HEIGHT];
+                
+                // Define the red color for the heart
+                #define HEART_COLOR 0xFE6262
+                
+                // Define the pink color for the flower petals
+                #define PETAL_COLOR 0xFF96FA
+                
+                // Define the yellow color for the flower center
+                #define CENTER_COLOR 0xFFFF00
+                
+                // Define the darker brown color for the trunk
+                #define DARKER_TRUNK_COLOR 0x5A2B10  // Darker brown color
+                // Define the darker green color for the leaves on the outside
+                #define DARKER_LEAVES_COLOR 0x008000  // Darker green color
+                // Define the lighter green color for the leaves on the inside
+                #define LIGHTER_LEAVES_COLOR 0x00FF00  // Lighter green color
+                // Define the yellow color for the smiley face
+                #define SMILEY_FACE_COLOR 0xFFFF00  // Yellow color
+                #define EYE_COLOR 0x000000  // Black color
+                // Define the white color for the bunny face
+                #define BUNNY_FACE_COLOR 0xFFFFFF  // White color
+                #define PACMAN_COLOR 0xFFFF00  // Yellow color
+                // Define the yellow color for the square
+                #define SQUARE_COLOR 0xFFFF00  // Yellow color
+                // Define the dot color
+                #define DOT_COLOR 0xFFFFFF  // White color
+                // Bunny face pattern in hex
+                // Define the dot color
+                #define DOT_COLOR 0xFFFFFF  // White color
+                #define OFF_COLOR CRGB::Black
+                // Define the yellow color for Pac-Man
+                #define PACMAN_COLOR 0xFFFF00  // Yellow color
+                
+                // Button pin
+                #define BUTTON_PIN 4
+                // Power pin
+                #define POWER_PIN 2
+                
+                // Define the yellow color for the clock
+                #define CLOCK_COLOR 0xFFFF00  // Yellow color
+                
+                // Define the yellow color for the flower center
+                #define CENTER_COLOR 0xFFFF00  // Yellow color
+                
+                // Define the white color for the petals
+                #define PETAL_COLOR 0xFFFFFF  // White color
+                // Define the yellow color for the flower center
+                #define YELLOW_CENTER_COLOR 0xFFFF00  // Yellow color for the center
+                #define WHITE_CENTER_COLOR 0xFFFFFF   // White color for the center
+                
+                // Define the white color for the petals
+                #define PETAL_COLOR 0xFFFFFF  // White color
+                
+                // Define colors
+                #define GREEN_COLOR  0x00181810  // Green color
+                #define WHITE_COLOR  0x00040000  // White color
+                #define YELLOW_COLOR 0x00040a04  // Yellow color
+                
+                // Define the white color for the ghost
+                #define GHOST_COLOR 0xFFFFFF
+                
+                // Define the yellow color for the moon
+                #define MOON_COLOR 0xFFFF00  // Yellow color
+                
+                // Clock pattern in hex
+                const uint8_t clockPattern[MATRIX_HEIGHT] = {
+                  0x3c, 0x42, 0x91, 0x91, 0x9d, 0x81, 0x42, 0x3c
+                };
+                
+                
+                const uint8_t bunnyFacePattern[MATRIX_HEIGHT] = {
+                  0x66, 0x66, 0x66, 0xff, 0x81, 0xa5, 0x99, 0x7e
+                };
+                
+                // Smiley face pattern in hex
+                const uint8_t smileyFacePattern[MATRIX_HEIGHT] = {
+                  0x3c, 0x42, 0xa5, 0x81, 0xa5, 0x99, 0x42, 0x3c
+                };
+                
+                // Tree pattern in hex
+                const uint8_t treePattern[MATRIX_HEIGHT] = {
+                  0x18, 0x18, 0x3C, 0x3C, 0x7E, 0x7E, 0xFF, 0x18
+                };
+                
+                // Flower pattern in hex (example)
+                const uint8_t flowerPattern[MATRIX_HEIGHT] = {
+                  0x00, 0x18, 0x3C, 0x7E, 0xFF, 0x7E, 0x3C, 0x18
+                };
+                
+                // Minecraft-style heart pattern in hex
+                const uint8_t minecraftHeart[MATRIX_HEIGHT] = {
+                  0x00, 0x66, 0xff, 0xff, 0xff, 0x7e, 0x3c, 0x18
+                };
+                
+                const uint8_t minecraftHeartOutline[MATRIX_HEIGHT] = {
+                  0x00,0x66,0xbd,0x99,0x81,0x42,0x24,0x18
+                };
+                
+                const uint8_t Heart[MATRIX_HEIGHT] = {
+                  0x00,0x66,0xff,0xff,0x7e,0x3c,0x18,0x00
+                };
+                
+                const uint8_t HeartOutline[MATRIX_HEIGHT] = {
+                  0x00,0x66,0x99,0x81,0x42,0x24,0x18,0x00
+                };
+                
+                // Pac-Man pattern in hex
+                const uint8_t pacmanPattern[MATRIX_HEIGHT] = {
+                  0x3c, 0x7e, 0xdf, 0xff, 0xf0, 0xff, 0x7e, 0x3c
+                };
+                
+                // flower centre
+                const uint8_t flowercentre[MATRIX_HEIGHT] = {
+                  0x00,0x00,0x00,0x18,0x18,0x00,0x00,0x00
+                };
+                
+                // flower petals
+                const uint8_t flowerpetals[MATRIX_HEIGHT] = {
+                  0x00,0x18,0x18,0x66,0x66,0x18,0x18,0x00
+                };
+                
+                
+                void setup() {
+                  FastLED.addLeds<WS2812, MATRIX_PIN, GRB>(leds, MATRIX_WIDTH * MATRIX_HEIGHT);
+                  FastLED.setBrightness(9); // Set brightness to 3 (adjust as needed)
+                
+                  Serial.begin(9600);
+                
+                  pinMode(BUTTON_PIN, INPUT_PULLUP);  // Button pin with pull-up resistor
+                  pinMode(POWER_PIN, OUTPUT);
+                  digitalWrite(POWER_PIN, LOW);  // Keep D3 always HIGH
+                  displayQuickRainbowWave();
+                  delay(350);
+                  displayOff();
+                }
+                
+                
+                
+                // Function to display the Minecraft-style heart on the matrix
+                void displayHeart() {
+                  // Clear the matrix
+                  fill_solid(leds, MATRIX_WIDTH * MATRIX_HEIGHT, CRGB::Black);
+                
+                  // Set pixels based on the Minecraft-style heart pattern and the specified color
+                  for (int row = 0; row < MATRIX_HEIGHT; row++) {
+                    for (int col = 0; col < MATRIX_WIDTH; col++) {
+                      if ((Heart[row] >> (7 - col)) & 0x01) {
+                        leds[row * MATRIX_WIDTH + col] = HEART_COLOR;
+                      }
+                    }
+                  }
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                }
+                
+                // Function to cycle one LED on the top right corner through all colors
+                void cycleTopRightLED() {
+                  static int ledIndex = MATRIX_WIDTH - 1; // Top right corner LED
+                  static int hue = 0;
+                
+                  // Clear the matrix
+                  fill_solid(leds, MATRIX_WIDTH * MATRIX_HEIGHT, CRGB::Black);
+                
+                  // Set the color of the top right LED
+                  leds[ledIndex] = CHSV(hue, 255, 255);
+                
+                  // Increment the hue for the next iteration
+                  hue += 5;
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                }
+                
+                // Function to display the heart outline with the specified hex pattern on the matrix
+                void displayHeartOutline() {
+                  fill_solid(leds, MATRIX_WIDTH * MATRIX_HEIGHT, CRGB::Black);
+                
+                  // Set pixels based on the Minecraft-style heart pattern and the specified color
+                  for (int row = 0; row < MATRIX_HEIGHT; row++) {
+                    for (int col = 0; col < MATRIX_WIDTH; col++) {
+                      if ((HeartOutline[row] >> (7 - col)) & 0x01) {
+                        leds[row * MATRIX_WIDTH + col] = HEART_COLOR;
+                      }
+                    }
+                  }
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                }
+                
+                // Function to display a flower on the matrix
+                void displayFlower() {
+                  // Clear the matrix
+                  fill_solid(leds, MATRIX_WIDTH * MATRIX_HEIGHT, CRGB::Black);
+                
+                  // Set pixels based on the flower pattern and colors
+                  for (int row = 0; row < MATRIX_HEIGHT; row++) {
+                    for (int col = 0; col < MATRIX_WIDTH; col++) {
+                      if ((flowerPattern[row] >> (7 - col)) & 0x01) {
+                        leds[row * MATRIX_WIDTH + col] = PETAL_COLOR;
+                      }
+                    }
+                  }
+                
+                  // Set the center pixel to yellow
+                  leds[MATRIX_WIDTH * (MATRIX_HEIGHT / 2) + (MATRIX_WIDTH / 2)] = CENTER_COLOR;
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                }
+                
+                // Function to display a tree on the matrix
+                void displayTree() {
+                  // Clear the matrix
+                  fill_solid(leds, MATRIX_WIDTH * MATRIX_HEIGHT, CRGB::Black);
+                
+                  // Set pixels based on the tree pattern and colors
+                  for (int row = 0; row < MATRIX_HEIGHT; row++) {
+                    for (int col = 0; col < MATRIX_WIDTH; col++) {
+                      if ((treePattern[row] >> (7 - col)) & 0x01) {
+                        if (row >= MATRIX_HEIGHT - 2) {
+                          // Bottom two pixels are the trunk (darker brown)
+                          leds[row * MATRIX_WIDTH + col] = DARKER_TRUNK_COLOR;
+                        } else {
+                          // Determine if the pixel is on the outer or inner part of the leaves
+                          int distanceToCenter = min(col, MATRIX_WIDTH - col - 1);
+                          // Set color based on distance to center
+                          CRGB leafColor = (distanceToCenter <= MATRIX_WIDTH / 4) ? DARKER_LEAVES_COLOR : LIGHTER_LEAVES_COLOR;
+                          leds[row * MATRIX_WIDTH + col] = leafColor;
+                        }
+                      }
+                    }
+                  }
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                }
+                
+                // Function to display a yellow smiley face on the matrix
+                void displaySmileyFace() {
+                  // Clear the matrix
+                  fill_solid(leds, MATRIX_WIDTH * MATRIX_HEIGHT, CRGB::Black);
+                
+                  // Set pixels based on the smiley face pattern and color
+                  for (int row = 0; row < MATRIX_HEIGHT; row++) {
+                    for (int col = 0; col < MATRIX_WIDTH; col++) {
+                      if ((smileyFacePattern[row] >> (7 - col)) & 0x01) {
+                        // Set color for the smiley face pixels
+                        leds[row * MATRIX_WIDTH + col] = SMILEY_FACE_COLOR;
+                      }
+                    }
+                  }
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                }
+                
+                // Function to display a diagonally starting rainbow wave on the matrix
+                void displayRainbowWave() {
+                  static uint8_t startIndex = 0;
+                
+                  // Fill the matrix with a rainbow wave pattern
+                  for (int row = 0; row < MATRIX_HEIGHT; row++) {
+                    for (int col = 0; col < MATRIX_WIDTH; col++) {
+                      uint8_t hue = startIndex + row * 10 + col * 5;
+                      leds[row * MATRIX_WIDTH + col] = CHSV(hue, 255, 255);
+                    }
+                  }
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                
+                  // Increment the starting hue for the next iteration
+                  startIndex += 1;
+                  if (startIndex > 255) {
+                    startIndex = 0;
+                  }
+                
+                  // Optional delay for visualization
+                  delay(50);
+                }
+                
+                // Function to display a diagonally starting rainbow wave on the matrix
+                void displayQuickRainbowWave() {
+                  static uint8_t startIndex = 0;
+                
+                  // Fill the matrix with a rainbow wave pattern
+                  for (int row = 0; row < MATRIX_HEIGHT; row++) {
+                    for (int col = 0; col < MATRIX_WIDTH; col++) {
+                      uint8_t hue = startIndex + row * 10 + col * 5;
+                      leds[row * MATRIX_WIDTH + col] = CHSV(hue, 255, 255);
+                    }
+                  }
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                
+                  // Increment the starting hue for the next iteration
+                  startIndex += 1;
+                  if (startIndex > 255) {
+                    startIndex = 0;
+                  }
+                
+                  // Optional delay for visualization
+                  delay(10);
+                }
+                
+                
+                // Function to display a smoothly flowing rainbow wave on the matrix
+                void displaySmoothRainbowWave() {
+                  static uint8_t startIndex = 0;
+                
+                  // Adjust the speed of the wave
+                  static uint8_t waveSpeed = 5;
+                
+                  // Fill the matrix with a smoothly flowing rainbow wave pattern
+                  for (int row = 0; row < MATRIX_HEIGHT; row++) {
+                    for (int col = 0; col < MATRIX_WIDTH; col++) {
+                      uint8_t hue = startIndex + row * 10 + col * 5;
+                      leds[row * MATRIX_WIDTH + col] = CHSV(hue, 255, 255);
+                      // Apply fading effect
+                      fadeToBlackBy(leds, MATRIX_WIDTH * MATRIX_HEIGHT, 10);
+                    }
+                  }
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                
+                  // Increment the starting hue for the next iteration
+                  startIndex += waveSpeed;
+                  if (startIndex > 255) {
+                    startIndex = 0;
+                  }
+                
+                  // Optional delay for visualization
+                  delay(30);
+                }
+                
+                void cycleTopLeftLED() {
+                  static int brightnessLevel = 0;
+                  static bool increasing = true;
+                
+                  // Clear the matrix
+                  fill_solid(leds, MATRIX_WIDTH * MATRIX_HEIGHT, CRGB::Black);
+                
+                  // Set the brightness of the top left LED
+                  leds[0] = CRGB::White;
+                  leds[0].fadeToBlackBy(255 - brightnessLevel);
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                
+                  // Increment or decrement brightness level
+                  if (increasing) {
+                    brightnessLevel++;
+                    if (brightnessLevel == 255) {
+                      increasing = false;
+                    }
+                  } else {
+                    brightnessLevel--;
+                    if (brightnessLevel == 0) {
+                      increasing = true;
+                    }
+                  }
+                
+                  // Optional delay for visualization
+                  delay(10);
+                }
+                
+                // Function to display the bunny face in white on the matrix
+                void displayBunnyFace() {
+                  // Clear the matrix
+                  fill_solid(leds, MATRIX_WIDTH * MATRIX_HEIGHT, CRGB::Black);
+                
+                  // Set pixels based on the bunny face pattern and color
+                  for (int row = 0; row < MATRIX_HEIGHT; row++) {
+                    for (int col = 0; col < MATRIX_WIDTH; col++) {
+                      if ((bunnyFacePattern[row] >> (7 - col)) & 0x01) {
+                        // Set color for the bunny face pixels
+                        leds[row * MATRIX_WIDTH + col] = BUNNY_FACE_COLOR;
+                      }
+                    }
+                  }
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                }
+                
+                
+                // Function to display a small Pac-Man animation on the matrix
+                void pacmanAnimation() {
+                  // Clear the matrix
+                  fill_solid(leds, MATRIX_WIDTH * MATRIX_HEIGHT, CRGB::Black);
+                
+                  // Define Pac-Man pattern
+                  const uint8_t pacmanPattern[MATRIX_HEIGHT] = {
+                    0x3C, 0x42, 0x99, 0xA5, 0xA5, 0x81, 0x42, 0x3C
+                  };
+                
+                  // Set pixels based on the Pac-Man pattern and color
+                  for (int row = 0; row < MATRIX_HEIGHT; row++) {
+                    for (int col = 0; col < MATRIX_WIDTH; col++) {
+                      if ((pacmanPattern[row] >> (7 - col)) & 0x01) {
+                        // Set color for Pac-Man pixels
+                        leds[row * MATRIX_WIDTH + col] = PACMAN_COLOR;
+                      }
+                    }
+                  }
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                
+                  // Optional delay for visualization
+                  delay(500);
+                }
+                
+                // Function to update the animation
+                void updateAnimation() {
+                  static int dotPosition = 0;
+                  static int squarePosition = 0;
+                
+                  // Clear the matrix
+                  fill_solid(leds, MATRIX_WIDTH * MATRIX_HEIGHT, CRGB::Black);
+                
+                  // Display the dots
+                  for (int i = 0; i < MATRIX_HEIGHT; i++) {
+                    leds[i * MATRIX_WIDTH + dotPosition] = DOT_COLOR;
+                  }
+                
+                  // Display the chasing square
+                  for (int row = squarePosition; row < squarePosition + 4; row++) {
+                    for (int col = 0; col < 4; col++) {
+                      leds[row * MATRIX_WIDTH + col] = SQUARE_COLOR;
+                    }
+                  }
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                
+                  // Move the dot and the square
+                  dotPosition = (dotPosition + 1) % MATRIX_WIDTH;
+                  squarePosition = (squarePosition + 1) % (MATRIX_HEIGHT - 3);
+                
+                  // Optional delay for visualization
+                  delay(100);
+                }
+                
+                // Function to update the falling dots animation
+                void fallingDotsAnimation() {
+                  static int dots[MATRIX_WIDTH];  // Array to store the positions of falling dots
+                
+                  // Initialize dots positions
+                  for (int i = 0; i < MATRIX_WIDTH; i++) {
+                    dots[i] = -1;  // Start off-screen
+                  }
+                
+                  // Clear the matrix
+                  fill_solid(leds, MATRIX_WIDTH * MATRIX_HEIGHT, CRGB::Black);
+                
+                  // Update and display the falling dots
+                  for (int i = 0; i < MATRIX_WIDTH; i++) {
+                    if (dots[i] < MATRIX_HEIGHT) {
+                      leds[dots[i] * MATRIX_WIDTH + i] = DOT_COLOR;  // Display the dot
+                      dots[i]++;  // Move the dot down
+                    }
+                  }
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                
+                  // Optional delay for visualization
+                  delay(10);
+                }
+                
+                // Function to display the ghost pattern in all white on the matrix
+                void displayGhost() {
+                  // Clear the matrix
+                  fill_solid(leds, MATRIX_WIDTH * MATRIX_HEIGHT, CRGB::Black);
+                
+                  // Ghost pattern in hex
+                  const uint8_t ghostPattern[MATRIX_HEIGHT] = {
+                    0x18, 0x7e, 0xff, 0xbd, 0xff, 0xff, 0xff, 0xa5
+                  };
+                
+                  // Set pixels based on the ghost pattern and color
+                  for (int row = 0; row < MATRIX_HEIGHT; row++) {
+                    for (int col = 0; col < MATRIX_WIDTH; col++) {
+                      if ((ghostPattern[row] >> (7 - col)) & 0x01) {
+                        leds[row * MATRIX_WIDTH + col] = GHOST_COLOR;
+                      }
+                    }
+                  }
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                
+                  // Optional delay for visualization
+                  delay(100);
+                }
+                
+                // Function to display Pac-Man on the matrix
+                void displayPacman() {
+                  // Clear the matrix
+                  fill_solid(leds, MATRIX_WIDTH * MATRIX_HEIGHT, CRGB::Black);
+                
+                  // Set pixels based on the Pac-Man pattern and color
+                  for (int row = 0; row < MATRIX_HEIGHT; row++) {
+                    for (int col = 0; col < MATRIX_WIDTH; col++) {
+                      if ((pacmanPattern[row] >> (7 - col)) & 0x01) {
+                        // Set color for Pac-Man pixels
+                        leds[row * MATRIX_WIDTH + col] = PACMAN_COLOR;
+                      }
+                    }
+                  }
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                }
+                
+                // Function to display the clock in yellow on the matrix
+                void displayClock() {
+                  // Clear the matrix
+                  fill_solid(leds, MATRIX_WIDTH * MATRIX_HEIGHT, CRGB::Black);
+                
+                  // Set pixels based on the clock pattern and color
+                  for (int row = 0; row < MATRIX_HEIGHT; row++) {
+                    for (int col = 0; col < MATRIX_WIDTH; col++) {
+                      if ((clockPattern[row] >> (7 - col)) & 0x01) {
+                        // Set color for clock pixels
+                        leds[row * MATRIX_WIDTH + col] = CLOCK_COLOR;
+                      }
+                    }
+                  }
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                }
+                
+                void heartBeat() {
+                  int i = 1;
+                  while(i == 1) {
+                    displayHeart();
+                    delay(600);
+                    displayHeartOutline();
+                    delay(600);
+                
+                    if (digitalRead(BUTTON_PIN) == LOW) {
+                      i = 2;
+                    }
+                  }
+                }
+                
+                // Function to display a flower on the matrix
+                void displayFlower2() {
+                  // Clear the matrix
+                  fill_solid(leds, MATRIX_WIDTH * MATRIX_HEIGHT, CRGB::Black);
+                
+                  // Set pixels based on the flower pattern and colors
+                  for (int row = 0; row < MATRIX_HEIGHT; row++) {
+                    for (int col = 0; col < MATRIX_WIDTH; col++) {
+                      if (row >= (MATRIX_HEIGHT / 2 - 2) && row < (MATRIX_HEIGHT / 2 + 2) &&
+                          col >= (MATRIX_WIDTH / 2 - 2) && col < (MATRIX_WIDTH / 2 + 2)) {
+                        // Center pixel
+                        leds[row * MATRIX_WIDTH + col] = CENTER_COLOR;
+                      } else if ((row >= (MATRIX_HEIGHT / 2 - 2) && row < (MATRIX_HEIGHT / 2 + 2)) ||
+                                 (col >= (MATRIX_WIDTH / 2 - 2) && col < (MATRIX_WIDTH / 2 + 2))) {
+                        // Petal pixels
+                        leds[row * MATRIX_WIDTH + col] = PETAL_COLOR;
+                      }
+                    }
+                  }
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                }
+                
+                // Function to display two flowers on the matrix
+                void displayFlowers() {
+                  // Clear the matrix
+                  fill_solid(leds, MATRIX_WIDTH * MATRIX_HEIGHT, CRGB::Black);
+                
+                    // Set pixels based on the Minecraft-style heart pattern and the specified color
+                  for (int row = 0; row < MATRIX_HEIGHT; row++) {
+                    for (int col = 0; col < MATRIX_WIDTH; col++) {
+                      if ((flowercentre[row] >> (7 - col)) & 0x01) {
+                        leds[row * MATRIX_WIDTH + col] = 0xFFFF00;
+                      }
+                    }
+                  }
+                
+                      // Set pixels based on the Minecraft-style heart pattern and the specified color
+                  for (int row = 0; row < MATRIX_HEIGHT; row++) {
+                    for (int col = 0; col < MATRIX_WIDTH; col++) {
+                      if ((flowerpetals[row] >> (7 - col)) & 0x01) {
+                        leds[row * MATRIX_WIDTH + col] = 0xFFFFFF;
+                      }
+                    }
+                  }
+                
+                  
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                }
+                
+                // Function to display Pac-Man 2 on the matrix
+                void displayPacman2() {
+                  // Clear the matrix
+                  fill_solid(leds, MATRIX_WIDTH * MATRIX_HEIGHT, CRGB::Black);
+                
+                  // Define Pac-Man pattern
+                  const uint8_t pacman2Pattern[MATRIX_HEIGHT] = {
+                    0x3C, 0x7E, 0xDC, 0xF8, 0xF8, 0xFC, 0x7E, 0x3C
+                  };
+                
+                  // Set pixels based on the Pac-Man pattern and color
+                  for (int row = 0; row < MATRIX_HEIGHT; row++) {
+                    for (int col = 0; col < MATRIX_WIDTH; col++) {
+                      if ((pacman2Pattern[row] >> (7 - col)) & 0x01) {
+                        // Set color for Pac-Man pixels
+                        leds[row * MATRIX_WIDTH + col] = PACMAN_COLOR;
+                      }
+                    }
+                  }
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                }
+                
+                // Function to switch between Pac-Man and Pac-Man 2 in an animation
+                void pacmanSwitchingAnimation() {
+                  // Switch to Pac-Man
+                  displayPacman();
+                  delay(1000);
+                
+                  // Switch to Pac-Man 2
+                  displayPacman2();
+                  delay(1000);
+                }
+                
+                // Function to display the moon in yellow on the matrix
+                void displayMoon() {
+                  // Clear the matrix
+                  fill_solid(leds, MATRIX_WIDTH * MATRIX_HEIGHT, CRGB::Black);
+                
+                  // Moon pattern in hex
+                  const uint8_t moonPattern[MATRIX_HEIGHT] = {
+                    0x1c, 0x70, 0x60, 0xe0, 0xe1, 0xf3, 0x7e, 0x3c
+                  };
+                
+                  const uint8_t moonPattern2[MATRIX_HEIGHT] = {
+                    0x04,0x40,0x40,0x00,0x01,0x20,0x22,0x00
+                  };  
+                
+                  // Set pixels based on the moon pattern and color
+                  for (int row = 0; row < MATRIX_HEIGHT; row++) {
+                    for (int col = 0; col < MATRIX_WIDTH; col++) {
+                      if ((moonPattern[row] >> (7 - col)) & 0x01) {
+                        leds[row * MATRIX_WIDTH + col] = MOON_COLOR;
+                      }
+                    }
+                  }
+                
+                
+                  // Display the changes on the matrix
+                  FastLED.show();
+                }
+                
+                
+                
+                // Function to turn off all LEDs in the matrix
+                void displayOff() {
+                  fill_solid(leds, MATRIX_WIDTH * MATRIX_HEIGHT, OFF_COLOR);
+                  FastLED.show();
+                }
+                
+                // Function pointers for different animations
+                void (*animationFunctions[])() = {
+                  displayOff,
+                  displayHeart,  
+                  displayHeartOutline,
+                  displayFlowers,
+                  displayTree,
+                  displaySmileyFace,
+                  displayMoon,
+                  displayGhost,
+                  displayBunnyFace,
+                  displayClock,
+                  displayPacman,
+                  displayPacman2,
+                  pacmanSwitchingAnimation,  
+                  displayRainbowWave,
+                };
+                
+                // Number of animation functions
+                const int numFunctions = sizeof(animationFunctions) / sizeof(animationFunctions[0]);
+                
+                // Current animation function index
+                int currentFunctionIndex = 0;
+                
+                
+                void loop() {
+                  // Check button state
+                  if (digitalRead(BUTTON_PIN) == LOW) {
+                    // Button pressed, switch to the next animation function
+                    currentFunctionIndex = (currentFunctionIndex + 1) % numFunctions;
+                    Serial.println("button pressed !");
+                    delay(200); // Debouncing delay
+                  }
+                
+                  // Call the current animation function
+                  animationFunctions[currentFunctionIndex]();
+                
+                  // Optional delay for visualization
+                  delay(50);
+                }
+</code></pre>
+    </div>
+    <!-- Include Highlight.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>
