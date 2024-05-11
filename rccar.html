@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="sonar.css">
+    <!-- Include a Highlight.js theme (you can choose different themes as needed) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/atom-one-dark.min.css">
+    <title>Obstacle Avoiding Car</title>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">
+            <img src="backarrow.png" alt="Back Arrow">
+        </a>
+        <a href="index.html">
+            <img src="nevisprojectslogo.png" alt="Nevi's Projects Logo">
+        </a>
+    </header>
+
+    <div class="card">
+        <pre><code class="cpp">
+            //Code for the transmitter
+
+            #include &lt;SPI.h&gt; 
+                #include &lt;nRF24L01.h&gt; 
+                #include &lt;RF24.h&gt; 
+                
+                RF24 radio(9, 10); // CE, CSN pins
+                const byte address[6] = "00001"; 
+                
+                void setup() {
+                  Serial.begin(9600);
+                  radio.begin();
+                  radio.openWritingPipe(address);
+                  radio.setPALevel(RF24_PA_LOW); 
+                  radio.stopListening(); 
+                }
+                
+                void loop() {
+                  int xValue = analogRead(A0); // x-axis
+                  int yValue = analogRead(A1); // y-axis
+                  int data[2] = {xValue, yValue};
+                
+
+                  radio.write(&data, sizeof(data));
+                
+                  delay(100);
+                }
+                
+            
+</code></pre>
+    </div>
+
+    <div class="card">
+        <pre><code class="cpp">
+            //Code for the receiver (car)
+
+            #include &lt;SPI.h&gt;
+                #include &lt;nRF24L01.h&gt;
+                #include &lt;RF24.h&gt;
+                #include &lt;AFMotor.h&gt;  
+                
+                RF24 radio(9, 10); 
+                const byte address[6] = "00001"; 
+                
+                AF_DCMotor motorLeft(1); //m3
+                AF_DCMotor motorRight(2); // m4
+                
+                void setup() {
+                  Serial.begin(9600);
+                  motorLeft.setSpeed(200); 
+                  motorRight.setSpeed(200); 
+                  radio.begin();
+                  radio.openReadingPipe(1, address);
+                  radio.setPALevel(RF24_PA_LOW); 
+                  radio.startListening();
+                }
+                
+                void loop() {
+                  if (radio.available()) {
+                    int data[2];
+                    radio.read(&data, sizeof(data));
+                    int xValue = data[0];
+                    int yValue = data[1];
+                    
+ 
+                    int throttle = map(yValue, 0, 1023, -255, 255);
+                    int turn = map(xValue, 0, 1023, -255, 255);
+                
+                    int leftMotorSpeed = throttle + turn;
+                    int rightMotorSpeed = throttle - turn;
+                
+                    // mapping
+                    adjustMotor(motorLeft, leftMotorSpeed);
+                    adjustMotor(motorRight, rightMotorSpeed);
+                  }
+                }
+                
+                void adjustMotor(AF_DCMotor motor, int speed) {
+                  if (speed > 255) speed = 255;
+                  else if (speed < -255) speed = -255;
+                
+                  if (speed > 0) {
+                    motor.setSpeed(speed);
+                    motor.run(FORWARD);
+                  } else if (speed < 0) {
+                    motor.setSpeed(-speed);
+                    motor.run(BACKWARD);
+                  } else {
+                    motor.run(RELEASE);
+                  }
+                }
+                
+            
+</code></pre>
+    </div>
+    <!-- Include Highlight.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>
