@@ -106,13 +106,34 @@ header img:hover {
 
 .card-text1 {
   flex: 0 0 65%;
+  height: 250px;
+  padding: 15px;
+}
+
+.card-text2 {
+  flex: 0 0 65%;
+  height: 350px;
+  padding: 15px;
+}
+
+.card-text3 {
+  flex: 0 0 65%;
+  height: 370px;
+  padding: 15px;
+}
+
+.card-text4 {
+  flex: 0 0 65%;
   height: 300px;
   padding: 15px;
 }
 
+
+
+
 .card-image1 img {
-  max-width: 50%; /* Make the image smaller */
-  max-height: 100%; /* Limit height to fit within the card */
+  max-width: 130%; /* Make the image smaller */
+  /* max-height: 100%; /* Limit height to fit within the card */
   display: block; /* Removes bottom space/gap */
 }
 
