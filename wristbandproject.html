@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="wristband.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/atom-one-dark.min.css">
     <title>Nevi's Projects</title>
 </head>
 <body>
@@ -21,10 +22,123 @@
         <div class="card card-text1">
             <div class="card-content">
                 <h3>Arduino Wristband</h3>
-                <p>Phasellus pretium sem a velit interdum, sed vestibulum erat dictum. Integer nec odio lacus. In vehicula elementum nibh at vehicula.</p>
+                <p>This design aims to act as a monitering/alert system for patients and the elderly</p>
+                <p>It provides heart rate and accelerometer data to detect abnormal heart patterns and falls, and alert caretakers</p>
+                <p>Uses HTTP methods (POST requests) to send data to a server for logging and processing</p>
+                <p>Processing the bulk of the data on the server helps run the Arduino Pro Mini on low power, this effect is helped by periodic scanning and an interrupt driven system based on the ADXL345</p>
+                <p>Fabric wire, smaller arduino were both elected to enhance user comfort and maintain robustness of the design</p>
+                <p>Working on effective power management helped me explore battery charging circuits, introducing me to overcharge/discharge protection and charging ICs. Eventually I decided to go with the TP4056 module</p>
+                <p>Working with the ADXL345 introduced me to MEMS and capacitive sensing, opening the door for me to explore other uses in electronics and safety</p>
             </div>
         </div>
+        
     </div>
-
+    <div class="card">
+        <pre><code class="cpp">
+                #include &lt;Wire.h&gt;
+                #include &lt;MAX30100_PulseOximeter.h&gt;
+                #include &lt;ESP8266WiFi.h&gt;
+                #include &lt;ESP8266HTTPClient.h&gt;
+                #include &lt;Adafruit_ADXL345_U.h&gt;
+                
+                #define WIFI_SSID               
+                #define WIFI_PASSWORD           
+                #define SERVER_URL_FALL         "192.xxx.xxx.xx.x/fall"
+                #define SERVER_URL_HR           "192.xxx.xxx.xx.x/heart"
+                #define BUZZER_PIN              9
+                #define THRESHOLD_HEART_RATE    170
+                
+                PulseOximeter pox;
+                Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified(12345);
+                uint32_t tsLastReport = 0;
+                unsigned long lastFallTime = 0;
+                const int fallDelay = 10000; /
+                
+                void setup() {
+                    Serial.begin(115200);
+                    pinMode(BUZZER_PIN, OUTPUT);
+                    
+                    // Initialize Pulse Oximeter
+                    if (!pox.begin()) {
+                        Serial.println("Failed to initialize pulse oximeter");
+                    }
+                
+                    // Initialize Accelerometer
+                    if (!accel.begin()) {
+                        Serial.println("Failed to initialize accelerometer");
+                    } else {
+                        accel.setRange(ADXL345_RANGE_16_G);
+                    }
+                
+                    // Connect to WiFi
+                    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+                    while (WiFi.status() != WL_CONNECTED) {
+                        delay(500);
+                        Serial.print(".");
+                    }
+                    Serial.println("WiFi connected");
+                }
+                
+                void loop() {
+                    
+                    pox.update();
+                    sensors_event_t event;
+                    accel.getEvent(&event);
+                
+                    
+                    if (millis() - tsLastReport > 1000) {
+                        float heartRate = pox.getHeartRate();
+                        Serial.print("Heart rate: ");
+                        Serial.println(heartRate);
+                
+                        if (heartRate > THRESHOLD_HEART_RATE) {
+                            sendHeartRateAlert(heartRate);
+                        }
+                
+                        tsLastReport = millis();
+                    }
+                
+                   
+                    if (event.acceleration.x * event.acceleration.x + 
+                        event.acceleration.y * event.acceleration.y + 
+                        event.acceleration.z * event.acceleration.z > 250) { 
+                        unsigned long currentTime = millis();
+                        if (currentTime - lastFallTime > fallDelay) {
+                            sendFallAlert();
+                            lastFallTime = currentTime;
+                        }
+                    }
+                }
+                
+                void sendFallAlert() {
+                    digitalWrite(BUZZER_PIN, HIGH);
+                    sendAlert(SERVER_URL_FALL, "Fall detected");
+                    delay(1000); // Buzzer on for 1 second
+                    digitalWrite(BUZZER_PIN, LOW);
+                }
+                
+                void sendHeartRateAlert(float heartRate) {
+                    String message = "Abnormal heart rate detected: ";
+                    message += String(heartRate);
+                    sendAlert(SERVER_URL_HR, message);
+                }
+                
+                void sendAlert(String url, String message) {
+                    if (WiFi.status() == WL_CONNECTED) {
+                        HTTPClient http;
+                        http.begin(url);
+                        http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+                        int httpResponseCode = http.POST("message=" + message);
+                        Serial.print("HTTP Response code: ");
+                        Serial.println(httpResponseCode);
+                        http.end();
+                    }
+                }
+                
+</code></pre>
+    </div>
+    <!-- Include Highlight.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
 </body>
 </html>
