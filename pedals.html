@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="pedals.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/atom-one-dark.min.css">
+    <title>Nevi's Projects</title>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link">
+            <img src="backarrow.png" alt="Back Arrow">
+        </a>
+        <a href="index.html">
+            <img src="nevisprojectslogo.png" alt="Nevi's Projects Logo">
+        </a>
+    </header>
+
+    <div class="cards-container">
+        <div class="card card-image1">
+            <img src="pedalsdrawing.png" alt="LED Image">
+        </div>
+        <div class="card card-text1">
+            <div class="card-content">
+                <h2>Flight Sim Pedals</h2>
+                <p>Set of rudder pedals designed as an addition to a H.O.T.A.S. system</p>
+                <p>Repurposed spare wood and sheet metal for base and pedals</p>
+                <p>Spring-vaulted system allows for resistance similar to actual rudder pedals</p>
+                <p>Potentiometer readings provide accurate angle tracking, and is calibrated on a 0 to 1024 scale zeroed on the resting position of the pedals</p>
+                <p>Arduino Micro-based device architecture allows us to emulate kb/m inputs allowing data from the pedals to be fed into a simulator</p>
+                <p>ESP-32 module allows for wireless use as well as FOTA (Firmware Over The Air) implementation for future updates</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="cards-container">
+        <div class="card card-image2">
+            <img src="pedalcad.png" alt="LED Image">
+        </div>
+        <div class="card card-text2">
+            <div class="card-content">
+                <h3>CAD Model</h3>
+                <p>CAD model of improved pedal design</p>
+                <p>Allows for more pedal travel distance and avoids scraping pedal on base</p>
+                <p>Facilitates smoother and more natural pedal movement</p>
+                <p>Can be upgraded with HC-SR04 ultrasonic sensors to provide more convenient pedal angle tracking</p>
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="card">
+        <pre><code class="cpp">
+                #include &lt;Wire.h&gt;
+                #include &lt;MAX30100_PulseOximeter.h&gt;
+                #include &lt;ESP8266WiFi.h&gt;
+                #include &lt;ESP8266HTTPClient.h&gt;
+                #include &lt;Adafruit_ADXL345_U.h&gt;
+                
+                #define WIFI_SSID               
+                #define WIFI_PASSWORD           
+                #define SERVER_URL_FALL         "192.xxx.xxx.xx.x/fall"
+                #define SERVER_URL_HR           "192.xxx.xxx.xx.x/heart"
+                #define BUZZER_PIN              9
+                #define THRESHOLD_HEART_RATE    170
+                
+                PulseOximeter pox;
+                Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified(12345);
+                uint32_t tsLastReport = 0;
+                unsigned long lastFallTime = 0;
+                const int fallDelay = 10000; /
+                
+                void setup() {
+                    Serial.begin(115200);
+                    pinMode(BUZZER_PIN, OUTPUT);
+                    
+                    // Initialize Pulse Oximeter
+                    if (!pox.begin()) {
+                        Serial.println("Failed to initialize pulse oximeter");
+                    }
+                
+                    // Initialize Accelerometer
+                    if (!accel.begin()) {
+                        Serial.println("Failed to initialize accelerometer");
+                    } else {
+                        accel.setRange(ADXL345_RANGE_16_G);
+                    }
+                
+                    // Connect to WiFi
+                    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+                    while (WiFi.status() != WL_CONNECTED) {
+                        delay(500);
+                        Serial.print(".");
+                    }
+                    Serial.println("WiFi connected");
+                }
+                
+                void loop() {
+                    
+                    pox.update();
+                    sensors_event_t event;
+                    accel.getEvent(&event);
+                
+                    
+                    if (millis() - tsLastReport > 1000) {
+                        float heartRate = pox.getHeartRate();
+                        Serial.print("Heart rate: ");
+                        Serial.println(heartRate);
+                
+                        if (heartRate > THRESHOLD_HEART_RATE) {
+                            sendHeartRateAlert(heartRate);
+                        }
+                
+                        tsLastReport = millis();
+                    }
+                
+                   
+                    if (event.acceleration.x * event.acceleration.x + 
+                        event.acceleration.y * event.acceleration.y + 
+                        event.acceleration.z * event.acceleration.z > 250) { 
+                        unsigned long currentTime = millis();
+                        if (currentTime - lastFallTime > fallDelay) {
+                            sendFallAlert();
+                            lastFallTime = currentTime;
+                        }
+                    }
+                }
+                
+                void sendFallAlert() {
+                    digitalWrite(BUZZER_PIN, HIGH);
+                    sendAlert(SERVER_URL_FALL, "Fall detected");
+                    delay(1000); // Buzzer on for 1 second
+                    digitalWrite(BUZZER_PIN, LOW);
+                }
+                
+                void sendHeartRateAlert(float heartRate) {
+                    String message = "Abnormal heart rate detected: ";
+                    message += String(heartRate);
+                    sendAlert(SERVER_URL_HR, message);
+                }
+                
+                void sendAlert(String url, String message) {
+                    if (WiFi.status() == WL_CONNECTED) {
+                        HTTPClient http;
+                        http.begin(url);
+                        http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+                        int httpResponseCode = http.POST("message=" + message);
+                        Serial.print("HTTP Response code: ");
+                        Serial.println(httpResponseCode);
+                        http.end();
+                    }
+                }
+                
+</code></pre>
+    </div>
+    <!-- Include Highlight.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>
