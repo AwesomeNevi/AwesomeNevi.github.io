@@ -21,7 +21,7 @@
         </div>
         <div class="card card-text1">
             <div class="card-content">
-                <h2>Flight Sim Pedals</h2>
+                <h2>Flight Simulator Pedals</h2>
                 <p>Set of rudder pedals designed as an addition to a H.O.T.A.S. system</p>
                 <p>Repurposed spare wood and sheet metal for base and pedals</p>
                 <p>Spring-vaulted system allows for resistance similar to actual rudder pedals</p>
@@ -74,107 +74,85 @@
         </div>
     </div>
 
+    <div class="card3-container">
+  
+        <div class="card3-card">
+          <img src="pedalsrotation.jpg" alt="Placeholder Image">
+        </div>
+ 
+      </div>
+
+      <div class="card card-text4">
+        <div class="card-content">
+            <h3>Processing Sketch for GUI</h3>
+        </div>
+    </div>
+
     <div class="card">
-        <pre><code class="cpp">
-                #include &lt;Wire.h&gt;
-                #include &lt;MAX30100_PulseOximeter.h&gt;
-                #include &lt;ESP8266WiFi.h&gt;
-                #include &lt;ESP8266HTTPClient.h&gt;
-                #include &lt;Adafruit_ADXL345_U.h&gt;
-                
-                #define WIFI_SSID               
-                #define WIFI_PASSWORD           
-                #define SERVER_URL_FALL         "192.xxx.xxx.xx.x/fall"
-                #define SERVER_URL_HR           "192.xxx.xxx.xx.x/heart"
-                #define BUZZER_PIN              9
-                #define THRESHOLD_HEART_RATE    170
-                
-                PulseOximeter pox;
-                Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified(12345);
-                uint32_t tsLastReport = 0;
-                unsigned long lastFallTime = 0;
-                const int fallDelay = 10000; /
-                
-                void setup() {
-                    Serial.begin(115200);
-                    pinMode(BUZZER_PIN, OUTPUT);
-                    
-                    // Initialize Pulse Oximeter
-                    if (!pox.begin()) {
-                        Serial.println("Failed to initialize pulse oximeter");
-                    }
-                
-                    // Initialize Accelerometer
-                    if (!accel.begin()) {
-                        Serial.println("Failed to initialize accelerometer");
-                    } else {
-                        accel.setRange(ADXL345_RANGE_16_G);
-                    }
-                
-                    // Connect to WiFi
-                    WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-                    while (WiFi.status() != WL_CONNECTED) {
-                        delay(500);
-                        Serial.print(".");
-                    }
-                    Serial.println("WiFi connected");
+        <pre><code class="java">
+            import processing.serial.*; // Import the serial library
+
+            Serial myPort; // The serial port
+            int numPotentiometers = 5; // Number of potentiometers
+            int[] potentiometerValues = new int[numPotentiometers]; // Array to store potentiometer values
+            int graphHeight = 200; // Height of each individual graph
+            int graphWidth; // Width of the window
+            
+            void setup() {
+              size(800, graphHeight * numPotentiometers); // Set the size of the window
+              graphWidth = width - 100; // Calculate the graph width, leaving some margin
+              String portName = Serial.list()[0]; // Automatically get the first port (modify if necessary)
+              myPort = new Serial(this, portName, 9600); // Initialize the serial port
+            }
+            
+            void draw() {
+              background(255); // Clear the background with white color
+              stroke(0); // Set the stroke color to black
+              strokeWeight(2); // Set the stroke weight to 2
+              
+              // Read data from the serial port
+              while (myPort.available() > 0) {
+                String inString = myPort.readStringUntil('\n');
+                if (inString != null) {
+                  String[] values = split(trim(inString), ',');
+                  for (int i = 0; i < numPotentiometers && i < values.length; i++) {
+                    potentiometerValues[i] = int(values[i]);
+                  }
                 }
-                
-                void loop() {
-                    
-                    pox.update();
-                    sensors_event_t event;
-                    accel.getEvent(&event);
-                
-                    
-                    if (millis() - tsLastReport > 1000) {
-                        float heartRate = pox.getHeartRate();
-                        Serial.print("Heart rate: ");
-                        Serial.println(heartRate);
-                
-                        if (heartRate > THRESHOLD_HEART_RATE) {
-                            sendHeartRateAlert(heartRate);
-                        }
-                
-                        tsLastReport = millis();
-                    }
-                
-                   
-                    if (event.acceleration.x * event.acceleration.x + 
-                        event.acceleration.y * event.acceleration.y + 
-                        event.acceleration.z * event.acceleration.z > 250) { 
-                        unsigned long currentTime = millis();
-                        if (currentTime - lastFallTime > fallDelay) {
-                            sendFallAlert();
-                            lastFallTime = currentTime;
-                        }
-                    }
-                }
-                
-                void sendFallAlert() {
-                    digitalWrite(BUZZER_PIN, HIGH);
-                    sendAlert(SERVER_URL_FALL, "Fall detected");
-                    delay(1000); // Buzzer on for 1 second
-                    digitalWrite(BUZZER_PIN, LOW);
-                }
-                
-                void sendHeartRateAlert(float heartRate) {
-                    String message = "Abnormal heart rate detected: ";
-                    message += String(heartRate);
-                    sendAlert(SERVER_URL_HR, message);
-                }
-                
-                void sendAlert(String url, String message) {
-                    if (WiFi.status() == WL_CONNECTED) {
-                        HTTPClient http;
-                        http.begin(url);
-                        http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-                        int httpResponseCode = http.POST("message=" + message);
-                        Serial.print("HTTP Response code: ");
-                        Serial.println(httpResponseCode);
-                        http.end();
-                    }
-                }
+              }
+            
+              // Draw the graphs for each potentiometer
+              for (int i = 0; i < numPotentiometers; i++) {
+                drawGraph(i, potentiometerValues[i]);
+              }
+            }
+            
+            // Function to draw the graph for each potentiometer
+            void drawGraph(int index, int value) {
+              int yOffset = index * graphHeight; // Calculate the vertical offset for each graph
+            
+              // Draw the axes
+              line(50, yOffset + graphHeight - 50, graphWidth + 50, yOffset + graphHeight - 50); // X-axis
+              line(50, yOffset + graphHeight - 50, 50, yOffset + 50); // Y-axis
+            
+              // Labels for axes
+              fill(0);
+              textSize(12);
+              textAlign(CENTER, CENTER);
+              text("Value", 25, yOffset + (graphHeight / 2));
+              textAlign(RIGHT, CENTER);
+              text("Time", graphWidth / 2 + 50, yOffset + graphHeight - 30);
+            
+              // Draw the potentiometer value
+              int x = int(map(value, 0, 1023, 50, graphWidth + 50));
+              int y = yOffset + graphHeight - 50;
+              ellipse(x, y, 10, 10);
+            
+              // Draw the value as text
+              textAlign(LEFT, CENTER);
+              text("P" + (index + 1) + ": " + value, graphWidth + 60, yOffset + graphHeight - 50);
+            }
+            
                 
 </code></pre>
     </div>

@@ -104,6 +104,16 @@ header img:hover {
   justify-content: center;
 }
 
+.card-image3 {
+  flex: 0 0 15%;
+  padding: 15px;
+  height: 305px; /* Fixed height */
+  width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .card-text1 {
   flex: 0 0 65%;
   height: 400px;
@@ -112,7 +122,13 @@ header img:hover {
 
 .card-text2 {
   flex: 0 0 65%;
-  height: 100px;
+  height: 300px;
+  padding: 15px;
+}
+
+.card-text3 {
+  flex: 0 0 65%;
+  height: 250px;
   padding: 15px;
 }
 
