@@ -110,6 +110,12 @@ header img:hover {
   padding: 15px;
 }
 
+.card-text2 {
+  flex: 0 0 65%;
+  height: 100px;
+  padding: 15px;
+}
+
 .card-image1 img {
   max-width: 140%; /* Make the image smaller */
  /* max-height: 100%; /* Limit height to fit within the card */
