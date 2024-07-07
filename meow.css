@@ -58,7 +58,7 @@ header img:hover {
 }
 
 .card {
-  background-color: #fff;
+  background-color: transparent;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   margin: 20px;
@@ -118,7 +118,7 @@ header img:hover {
 
 .card-text3 {
   flex: 0 0 65%;
-  height: 370px;
+  height: 420px;
   padding: 15px;
 }
 

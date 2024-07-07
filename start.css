@@ -60,3 +60,38 @@ nav a:hover {
     border-radius: 15px; /* More pronounced rounded corners when hovered */
     text-decoration: underline; /* Underlines the text to indicate interactivity */
 }
+
+nav a2 {
+    display: block;
+    text-decoration: none;
+    color: inherit; /* Inherits the darker text color */
+    font-size: 16px;
+    margin: 10px 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-radius 0.3s ease; /* Add smooth transitions for border-radius */
+    border-radius: 5px; /* Initial rounded corners for links */
+    
+}
+
+nav a2:hover {
+    transform: translateY(-3px); /* Moves the link slightly up */
+    box-shadow: 0 5px 10px rgba(123, 184, 177, 0.5); /* Adds a softer glow effect than the logo */
+    border-radius: 15px; /* More pronounced rounded corners when hovered */
+    text-decoration: underline; /* Underlines the text to indicate interactivity */
+}
+
+nav p1 {
+    display: block;
+    text-decoration: underline;
+    color: inherit; /* Inherits the darker text color */
+    font-size: 20px;
+    margin: 10px 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-radius 0.3s ease; /* Add smooth transitions for border-radius */
+    border-radius: 5px; /* Initial rounded corners for links */
+}
+
+nav h1:hover {
+    transform: translateY(-3px); /* Moves the link slightly up */
+    box-shadow: 0 5px 10px rgba(123, 184, 177, 0.5); /* Adds a softer glow effect than the logo */
+    border-radius: 15px; /* More pronounced rounded corners when hovered */
+    text-decoration: underline; /* Underlines the text to indicate interactivity */
+}
