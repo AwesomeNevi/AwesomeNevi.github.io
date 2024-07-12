@@ -61,9 +61,26 @@
                 <p>Configured the ADS9008 library for use with the v1.3 version of the sensor and arduino pro mini board</p>
                 <p>Also used appropriate libraries to activate a low-power state on the MCU when sensor readings are stale</p>
             </div>
-        </div>
-        
+          </div>
     </div>
+
+    <div class="cards-container">
+      <div class="card card-image1">
+          <img src="heartdisplay.png" alt="LED Image">
+      </div>
+      <div class="card card-text1">
+          <div class="card-content">
+              <h3>Display Testing</h3>
+              <p>Adafruit GFX Library: Provides graphics functions for various displays.
+                Adafruit SSD1306 Library: Specific to the SSD1306 OLED display.</p>
+              <p>Configured the display: 
+                SCREEN_WIDTH and SCREEN_HEIGHT: Define the resolution of the OLED display.
+                OLED_RESET: Define the reset pin for the OLED (set to -1 if using default I2C address)
+              </p>
+              <p>Use the map function to convert potentiometer values (0-1023) to display coordinates (0-SCREEN_WIDTH).</p>
+          </div>
+        </div>
+  </div>
 
     <div class="card">
         <pre><code class="java">
